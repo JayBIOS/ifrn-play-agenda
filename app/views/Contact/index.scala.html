@@ -1,0 +1,50 @@
+@(contactList: List[Contact])
+
+@scripts = {
+    <script>
+        
+        function removeContact(i) {
+            $.ajax({
+                url: '/contatos/' + i + '/delete',
+                type: 'DELETE',
+                success: function(result) {
+                    $('tr#' + i).remove();
+                }
+            });
+        }
+
+        $('button.bremove').click(function() {
+
+            removeContact(parseInt($(this).attr('i')));
+    
+        });
+    </script>
+}
+
+@main("Agenda")("Lista de contatos")(scripts) {
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col-xs-2">Nome</th>
+                <th class="col-xs-2">E-mail</th>
+                <th class="col-xs-2">Telefone</th>
+                <th class="col-xs-1"></th>
+            </tr>
+        </thead>
+        <tbody>
+        @for((contact, i) <- contactList.zipWithIndex) {
+            <tr id="@i">
+                <td>@contact.name</td>
+                <td>@contact.email</td>
+                <td>@contact.phone</td>
+                <td>
+                    <a class="btn btn-info btn-sm" href="/contatos/@i/edit"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <button class="btn btn-danger btn-sm bremove" i="@i"><span class="glyphicon glyphicon-remove"></span></button>
+                </td>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <a class="btn btn-success" href="@routes.ContactController.create()">Adicionar Contato</a>
+}

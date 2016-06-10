@@ -1,0 +1,32 @@
+@(contactForm: Form[Contact])(implicit messages: Messages)
+
+@import b3.vertical.fieldConstructor
+
+@scripts = {}
+
+@main("Adicionar contato | Agenda")("Adicionar Contato")(scripts) {
+
+    @b3.form(routes.ContactController.createPost) {
+        <div class="row">
+            <div class="col-xs-3">
+                @b3.text(contactForm("name"), '_label -> "Nome", 'placeholder -> "Digite o nome do contato")
+            </div>
+            <div class="col-xs-3">
+                @b3.email(contactForm("email"), '_label -> "E-mail", 'placeholder -> "Digite o e-mail do contato")
+            </div>
+            <div class="col-xs-2">
+                @b3.text(contactForm("phone"), '_label -> "Telefone", 'placeholder -> "(DD) Número")
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-1">
+                @b3.buttonType("submit", 'class -> "btn btn-success"){ Adicionar }
+            </div>
+            <div class="col-xs-1">
+                @b3.free(){
+                    <a class="btn btn-danger" href="@routes.ContactController.index()">Cancelar</a>
+                }
+            </div>
+        </div>
+    }
+}
